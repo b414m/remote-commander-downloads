@@ -1,4 +1,4 @@
-# Remote Commander R26 | Descargas para Windows
+# Remote Commander R26 v0.11.1 | Descargas para Windows
 
 **[Descargar RemoteCommander-R26-Windows-x64.zip](https://github.com/b414m/remote-commander-downloads/releases/latest)**
 
@@ -16,7 +16,7 @@ Distribución **binaria** de Remote Commander b414m con Desktop Commander MIT 0.
 
 1. Descarga el ZIP de [Releases](https://github.com/b414m/remote-commander-downloads/releases/latest) y verifica su SHA-256 con el archivo `RemoteCommander-R26-Windows-x64.sha256`. Descomprímelo y abre PowerShell en esa carpeta.
 
-**Verificación rápida del ZIP descargado:** desde PowerShell en la carpeta de descargas, ejecuta `Get-FileHash .\RemoteCommander-R26-Windows-x64.zip -Algorithm SHA256`. Su valor debe ser `68a3acb3c0bc84c7bd5b336bda7527d51c294141993d77e9ae8ecc262b3dabc2`; si no coincide, **no ejecutes** el instalador.
+**Verificación rápida del ZIP descargado:** desde PowerShell en la carpeta de descargas, ejecuta `Get-FileHash .\RemoteCommander-R26-Windows-x64.zip -Algorithm SHA256`. Su valor debe ser `01b13b284a934e9acb3e2bc4e1da608acaeed2ba2933abb178c23bb478cf7213`; si no coincide, **no ejecutes** el instalador.
 
 2. Instala y confirma el emparejamiento local una vez:
 
@@ -47,6 +47,32 @@ Distribución **binaria** de Remote Commander b414m con Desktop Commander MIT 0.
    > Ejecuta remote_hostname y workspace_roots usando mi Remote Commander.
 
 La instalación no modifica otra PC ni instala servicios o tareas programadas. Si la interfaz de ChatGPT no muestra **Connection: Tunnel**, verifica la elegibilidad de tu cuenta; no debes interpretar una suscripción Plus como garantía.
+
+## Actualizar Remote Commander en una PC donde ya funciona
+
+**No necesitas crear otro túnel, URL ni clave si actualizas en el mismo usuario de Windows.** La versión v0.11.1 reutiliza el túnel actual, la llave protegida por DPAPI y las autorizaciones existentes, sin sobrescribir la configuración anterior.
+
+1. Descarga el ZIP nuevo, verifica su hash y extráelo en una carpeta nueva. Con la versión anterior todavía funcionando, ejecuta desde esa carpeta:
+
+   ~~~powershell
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install-B414m.ps1 -Upgrade
+   ~~~
+
+   La preparación verifica el paquete, guarda una copia privada del estado y configura el nuevo motor. **No detiene el servicio anterior**.
+
+2. En la terminal del Remote Commander antiguo pulsa **Ctrl+C** para detener su proceso y túnel. A continuación, en la carpeta del ZIP nuevo, ejecuta:
+
+   ~~~powershell
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Upgrade-B414m.ps1 -Action Activate
+   ~~~
+
+3. Comprueba en ChatGPT que el mismo complemento vuelve a responder. Si necesitas revertirlo, pulsa Ctrl+C en la terminal de R26 y ejecuta:
+
+   ~~~powershell
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Upgrade-B414m.ps1 -Action Rollback
+   ~~~
+
+**La dirección HTTPS y el tunnel_id se mantienen.** No copies ni pegues las claves en ChatGPT. El cambio de procesos siempre se ejecuta desde Windows, pues al detener el túnel ChatGPT perderá temporalmente la conexión. Este procedimiento funciona con instalaciones compatibles en el mismo usuario de Windows; las instalaciones nuevas en otro equipo o perfil requieren un túnel y llave propios. No se automatiza ninguna concesión adicional de permisos.
 
 ## Integridad y seguridad
 
