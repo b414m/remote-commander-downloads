@@ -4,15 +4,26 @@
 
 Distribución **binaria** de Remote Commander b414m con Desktop Commander MIT 0.3.1 integrado. La instalación es local, no requiere acceso al repositorio privado de desarrollo, GitHub CLI, cuentas de otros usuarios, dominio propio, Tailscale ni servicios Windows.
 
-## Requisitos previos
+## ¿Instalar o actualizar?
+
+| Situación | Sigue esta guía | Túnel y clave |
+| --- | --- | --- |
+| **Primera vez** en esta computadora y usuario Windows | **[Instalar](#instalar-en-una-pc-nueva)** | Crea un túnel y una clave propios. |
+| **Ya tienes Remote Commander funcionando** en esta misma computadora y usuario Windows | **[Actualizar](#actualizar-una-instalacion-existente)** | Conserva el túnel, la URL HTTPS, la llave DPAPI y las autorizaciones. |
+
+**Importante:** no uses los pasos de «Instalar» para reemplazar una instalación existente. En «Actualizar» se prepara la nueva versión **antes de detener la anterior**, se realiza el cambio con Ctrl+C y se mantiene disponible la reversión.
+
+## Requisitos comunes y de instalación nueva
 
 - Windows 10/11 **x64**, PowerShell 5.1+ y [Node.js 22.12+](https://nodejs.org/).
 - **ChatGPT con compatibilidad real** para crear un servidor MCP personalizado mediante **Plugins → + → Add custom MCP server → Connection: Tunnel**. **Plus por sí solo no garantiza esta característica**: funcionó en una cuenta Plus particular, pero el soporte MCP completo documentado oficialmente no está disponible de forma general para Plus. [Documentación de OpenAI](https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt).
 - Una **organización propia de OpenAI Platform** con permisos para crear un túnel (**Tunnels Read + Manage**) y una clave API **Restricted** para ejecutarlo (**Tunnels Read + Use**). ChatGPT Plus y OpenAI Platform son accesos distintos. [OpenAI Platform Tunnels](https://platform.openai.com/settings/organization/tunnels).
 
-**Cada usuario y cada computadora crean sus propios túneles y claves.** No introduzcas claves de OpenAI en ChatGPT, GitHub ni archivos compartidos.
+**Al instalar en una computadora nueva**, cada usuario y cada equipo deben crear su propio túnel y clave. **Al actualizar en el mismo equipo y cuenta Windows se reutilizan los ya configurados.** No introduzcas claves de OpenAI en ChatGPT, GitHub ni archivos compartidos.
 
-## Cinco pasos
+## Instalar en una PC nueva
+
+**Solo si es una instalación nueva.** Si ya tienes el MCP configurado, ve directamente a [Actualizar](#actualizar-una-instalacion-existente).
 
 1. Descarga el ZIP de [Releases](https://github.com/b414m/remote-commander-downloads/releases/latest) y verifica su SHA-256 con el archivo `RemoteCommander-R26-Windows-x64.sha256`. Descomprímelo y abre PowerShell en esa carpeta.
 
@@ -48,31 +59,39 @@ Distribución **binaria** de Remote Commander b414m con Desktop Commander MIT 0.
 
 La instalación no modifica otra PC ni instala servicios o tareas programadas. Si la interfaz de ChatGPT no muestra **Connection: Tunnel**, verifica la elegibilidad de tu cuenta; no debes interpretar una suscripción Plus como garantía.
 
-## Actualizar Remote Commander en una PC donde ya funciona
+## Actualizar una instalación existente
 
-**No necesitas crear otro túnel, URL ni clave si actualizas en el mismo usuario de Windows.** La versión v0.11.1 reutiliza el túnel actual, la llave protegida por DPAPI y las autorizaciones existentes, sin sobrescribir la configuración anterior.
+**No crees otro túnel, URL ni llave:** esta ruta es para el mismo equipo y usuario Windows donde Remote Commander ya está configurado. La versión v0.11.1 reutiliza el túnel de OpenAI, el secreto DPAPI, el emparejamiento, las rutas de proyectos y las autorizaciones. **Descarga el ZIP nuevo y extráelo en una carpeta nueva**, sin borrar la carpeta de la versión anterior.
 
-1. Descarga el ZIP nuevo, verifica su hash y extráelo en una carpeta nueva. Con la versión anterior todavía funcionando, ejecuta desde esa carpeta:
+1. **Prepara R26 con el MCP anterior todavía funcionando.** En PowerShell abierto dentro de la carpeta del ZIP **nuevo** ejecuta:
 
    ~~~powershell
    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install-B414m.ps1 -Upgrade
    ~~~
 
-   La preparación verifica el paquete, guarda una copia privada del estado y configura el nuevo motor. **No detiene el servicio anterior**.
+   Se verifica el paquete y se crea una configuración alternativa y copia privada de estado. **No detiene el MCP actual ni altera su configuración original.** Ejecutar otra vez `-Upgrade` con el plan ya preparado es seguro.
 
-2. En la terminal del Remote Commander antiguo pulsa **Ctrl+C** para detener su proceso y túnel. A continuación, en la carpeta del ZIP nuevo, ejecuta:
+2. **Pulsa Ctrl+C en la ventana de PowerShell que mantiene la versión anterior.** Si el servidor y `tunnel-client` están en **dos ventanas**, detén **ambos** con Ctrl+C. Si ambos se lanzaron juntos mediante `local-stack run --with-tunnel`, basta con detener esa ventana. ChatGPT perderá temporalmente el enlace: **el cambio se realiza en Windows, no desde el propio MCP**.
+
+3. **Activa R26** desde la carpeta del ZIP **nuevo**, dejando abierta la terminal:
 
    ~~~powershell
    powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Upgrade-B414m.ps1 -Action Activate
    ~~~
 
-3. Comprueba en ChatGPT que el mismo complemento vuelve a responder. Si necesitas revertirlo, pulsa Ctrl+C en la terminal de R26 y ejecuta:
+   R26 usa el mismo puerto local 8787, túnel, dirección HTTPS y llave existente. **No cambies el complemento ni el túnel en ChatGPT.** Si el puerto o el túnel todavía están ocupados, el instalador bloquea el arranque en lugar de duplicarlos.
 
-   ~~~powershell
-   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Upgrade-B414m.ps1 -Action Rollback
-   ~~~
+4. **Verifica la conexión** desde ChatGPT con `remote_hostname` y `workspace_roots`, y revisa tus capacidades y autorizaciones antes de ejecutar modificaciones.
 
-**La dirección HTTPS y el tunnel_id se mantienen.** No copies ni pegues las claves en ChatGPT. El cambio de procesos siempre se ejecuta desde Windows, pues al detener el túnel ChatGPT perderá temporalmente la conexión. Este procedimiento funciona con instalaciones compatibles en el mismo usuario de Windows; las instalaciones nuevas en otro equipo o perfil requieren un túnel y llave propios. No se automatiza ninguna concesión adicional de permisos.
+**Si falla y necesitas revertir:** detén R26 con **Ctrl+C** y ejecuta desde la misma carpeta del ZIP nuevo:
+
+~~~powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Upgrade-B414m.ps1 -Action Rollback
+~~~
+
+Se inicia el ejecutable anterior con su configuración original, sin regenerar ni copiar llaves. Para comprobar el plan sin activar el MCP ejecuta `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Upgrade-B414m.ps1 -Action Status`. Si R26 ya modificó datos persistentes, evalúa su compatibilidad al regresar a versiones antiguas.
+
+**Otro equipo o cuenta Windows no es «Actualizar».** Sigue «Instalar», porque DPAPI no permite trasladar credenciales protegidas entre perfiles o equipos y nunca deben reutilizarse las claves de otra persona. No se conceden permisos nuevos automáticamente.
 
 ## Integridad y seguridad
 
