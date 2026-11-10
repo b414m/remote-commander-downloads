@@ -1,4 +1,4 @@
-# Remote Commander R26 v0.11.1 | Descargas para Windows
+# Remote Commander R26 v0.11.2 | Descargas para Windows
 
 **[Descargar RemoteCommander-R26-Windows-x64.zip](https://github.com/b414m/remote-commander-downloads/releases/latest)**
 
@@ -27,7 +27,7 @@ Distribución **binaria** de Remote Commander b414m con Desktop Commander MIT 0.
 
 1. Descarga el ZIP de [Releases](https://github.com/b414m/remote-commander-downloads/releases/latest) y verifica su SHA-256 con el archivo `RemoteCommander-R26-Windows-x64.sha256`. Descomprímelo y abre PowerShell en esa carpeta.
 
-**Verificación rápida del ZIP descargado:** desde PowerShell en la carpeta de descargas, ejecuta `Get-FileHash .\RemoteCommander-R26-Windows-x64.zip -Algorithm SHA256`. Su valor debe ser `01b13b284a934e9acb3e2bc4e1da608acaeed2ba2933abb178c23bb478cf7213`; si no coincide, **no ejecutes** el instalador.
+**Verificación rápida del ZIP descargado:** desde PowerShell en la carpeta de descargas, ejecuta `Get-FileHash .\RemoteCommander-R26-Windows-x64.zip -Algorithm SHA256`. Su valor debe ser `4dca3e51a15e480df1c6c4173dbe992dcdc5a5ab6ae83dbb6859acbd95dd74b6`; si no coincide, **no ejecutes** el instalador.
 
 2. Instala y confirma el emparejamiento local una vez:
 
@@ -61,7 +61,7 @@ La instalación no modifica otra PC ni instala servicios o tareas programadas. S
 
 ## Actualizar una instalación existente
 
-**No crees otro túnel, URL ni llave:** esta ruta es para el mismo equipo y usuario Windows donde Remote Commander ya está configurado. La versión v0.11.1 reutiliza el túnel de OpenAI, el secreto DPAPI, el emparejamiento, las rutas de proyectos y las autorizaciones. **Descarga el ZIP nuevo y extráelo en una carpeta nueva**, sin borrar la carpeta de la versión anterior.
+**No crees otro túnel, URL ni llave:** esta ruta es para el mismo equipo y usuario Windows donde Remote Commander ya está configurado. La versión v0.11.2 reutiliza el túnel de OpenAI, el secreto DPAPI, el emparejamiento, las rutas de proyectos y las autorizaciones. **Descarga el ZIP nuevo y extráelo en una carpeta nueva**, sin borrar la carpeta de la versión anterior.
 
 1. **Prepara R26 con el MCP anterior todavía funcionando.** En PowerShell abierto dentro de la carpeta del ZIP **nuevo** ejecuta:
 
