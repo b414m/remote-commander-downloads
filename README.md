@@ -24,7 +24,7 @@ Distribución **binaria** de Remote Commander b414m con Desktop Commander MIT 0.
 
    Opcionalmente, añade `-AllowTerminal` en **la instalación inicial** si autorizas a ChatGPT a ejecutar comandos con todos los privilegios de tu usuario Windows. **No es un sandbox**. La carpeta predeterminada es `%USERPROFILE%\Projects`; puedes usar `-ProjectsRoot 'D:\Proyectos'`.
 
-3. **Personalmente**, crea un túnel en OpenAI Platform y genera la clave Restricted con **Tunnels Read + Use**. Conserva su `tunnel_id`. El instalador **no genera** túneles, llaves ni permisos en OpenAI.
+3. **Personalmente**, en [OpenAI Platform → Tunnels](https://platform.openai.com/settings/organization/tunnels) selecciona tu organización y crea un túnel nuevo para esa PC. Copia su `tunnel_id`. Después entra en **Configuración de organización → Proyecto → Claves de API → Crear nueva clave secreta**, elige **Restricted** (no permisos completos) y concede **Tunnels Read + Use** a esa clave. Tu usuario/organización también debe tener esos permisos sobre el túnel. Si no ves la opción Tunnels o esos permisos, tu acceso de Platform no está habilitado y ChatGPT Plus no lo suple. El instalador **no genera** túneles, llaves ni permisos en OpenAI. [Cómo crear claves restringidas](https://help.openai.com/es-419/articles/9186755-managing-projects-in-the-api-platform).
 
 4. Abre dos terminales en la carpeta extraída. Mantén ambas abiertas:
 
