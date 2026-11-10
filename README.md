@@ -16,6 +16,8 @@ Distribución **binaria** de Remote Commander b414m con Desktop Commander MIT 0.
 
 1. Descarga el ZIP de [Releases](https://github.com/b414m/remote-commander-downloads/releases/latest) y verifica su SHA-256 con el archivo `RemoteCommander-R26-Windows-x64.sha256`. Descomprímelo y abre PowerShell en esa carpeta.
 
+**Verificación rápida del ZIP descargado:** desde PowerShell en la carpeta de descargas, ejecuta `Get-FileHash .\RemoteCommander-R26-Windows-x64.zip -Algorithm SHA256`. Su valor debe ser `68a3acb3c0bc84c7bd5b336bda7527d51c294141993d77e9ae8ecc262b3dabc2`; si no coincide, **no ejecutes** el instalador.
+
 2. Instala y confirma el emparejamiento local una vez:
 
    ~~~powershell
